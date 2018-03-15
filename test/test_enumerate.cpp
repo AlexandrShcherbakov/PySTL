@@ -8,34 +8,28 @@
 
 TEST(VectorEnumerate__Test, EnumerateFunction) {
     std::vector<float> v(10, 1e-4f);
-    auto enumObject = PySTL::enumerate(v);
-    ASSERT_EQ(PySTL::len(enumObject), PySTL::len(v));
-    for (auto it : enumObject) {
+    for (auto it : PySTL::enumerate(v)) {
         ASSERT_EQ(std::get<1>(it), v[std::get<0>(it)]);
     }
-    enumObject = PySTL::enumerate(v, 1);
-    ASSERT_EQ(std::get<0>(enumObject.back()), PySTL::len(v));
+    ASSERT_EQ(0, std::get<0>(*PySTL::enumerate(v).begin()));
+    ASSERT_EQ(v[0], std::get<1>(*PySTL::enumerate(v).begin()));
 }
 
 
 TEST(ArrayEnumerate__Test, EnumerateFunction) {
     std::array<float, 3> v = {1, 2, 3};
-    auto enumObject = PySTL::enumerate(v);
-    ASSERT_EQ(PySTL::len(enumObject), PySTL::len(v));
-    for (auto it : enumObject) {
+    for (auto it : PySTL::enumerate(v)) {
         ASSERT_EQ(std::get<1>(it), v[std::get<0>(it)]);
     }
-    enumObject = PySTL::enumerate(v, 1);
-    ASSERT_EQ(std::get<0>(enumObject.back()), PySTL::len(v));
+    ASSERT_EQ(0, std::get<0>(*PySTL::enumerate(v).begin()));
+    ASSERT_EQ(v[0], std::get<1>(*PySTL::enumerate(v).begin()));
 }
 
 TEST(StringEnumerate__Test, EnumerateFunction) {
     std::string v = "Test string";
-    auto enumObject = PySTL::enumerate(v);
-    ASSERT_EQ(PySTL::len(enumObject), PySTL::len(v));
-    for (auto it : enumObject) {
+    for (auto it : PySTL::enumerate(v)) {
         ASSERT_EQ(std::get<1>(it), v[std::get<0>(it)]);
     }
-    enumObject = PySTL::enumerate(v, 1);
-    ASSERT_EQ(std::get<0>(enumObject.back()), PySTL::len(v));
+    ASSERT_EQ(0, std::get<0>(*PySTL::enumerate(v).begin()));
+    ASSERT_EQ(v[0], std::get<1>(*PySTL::enumerate(v).begin()));
 }
