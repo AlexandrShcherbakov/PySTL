@@ -16,7 +16,7 @@ namespace PySTL {
 
     template<class T>
     class enumerate {
-        using iterator_value_type = std::tuple<int, typename T::value_type>;
+        using iterator_value_type = std::tuple<int, typename T::value_type&>;
         T & Collection;
         const int Start;
 
@@ -28,7 +28,7 @@ namespace PySTL {
                 Collection(collection), Idx(idx), RealIdx(realIdx) {}
 
             iterator_value_type operator*() {
-                return std::make_tuple(Idx, Collection[RealIdx]);
+                return iterator_value_type(Idx, Collection[RealIdx]);
             }
 
             void operator++() {
@@ -56,6 +56,7 @@ namespace PySTL {
             const int lenCollection = len(Collection);
             return EnumerateIterator(Collection, Start + lenCollection, lenCollection);
         }
+
     };
 }
 
