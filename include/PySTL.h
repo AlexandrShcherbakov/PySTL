@@ -17,6 +17,7 @@ namespace PySTL {
     class enumerate {
         using iterator_value_type = std::tuple<int, typename T::value_type&>;
         T & Collection;
+        T FakeCollection;
         const int Start;
 
         class EnumerateIterator {
@@ -45,6 +46,8 @@ namespace PySTL {
         };
 
     public:
+        enumerate(T && collection, const int start=0) :
+            FakeCollection(collection), Collection(FakeCollection), Start(start) {}
         enumerate(T & collection, const int start=0) : Collection(collection), Start(start) {}
 
         EnumerateIterator begin() {
@@ -67,12 +70,19 @@ namespace PySTL {
             RangeIterator(const int idx, const int begin, const int end, const int step):
                 Idx(idx), Begin(begin), End(end), Step(step) {}
 
-            int operator*() {
+            int& operator*() {
                 return Idx;
             }
 
-            void operator++() {
+            const RangeIterator& operator++() {
                 Idx += Step;
+                return *this;
+            }
+
+            const RangeIterator operator++(int) {
+                auto copy = *this;
+                Idx += Step;
+                return copy;
             }
 
             bool operator==(const RangeIterator & it) const {
@@ -91,17 +101,22 @@ namespace PySTL {
         };
     public:
         using value_type = int;
+        using iterator = RangeIterator;
         range(const int begin, const int end, const int step=1): Begin(begin), End(end), Step(step) {
             assert(Step);
         }
         range(const int end) : range(0, end) {}
 
-        RangeIterator begin() {
-            return RangeIterator(Begin, Begin, End, Step);
+        iterator begin() {
+            return iterator(Begin, Begin, End, Step);
         }
 
-        RangeIterator end() {
-            return RangeIterator(End, Begin, End, Step);
+        iterator end() {
+            return iterator(End, Begin, End, Step);
+        }
+
+        int size() const {
+            return (End - Begin + Step - 1) / Step;
         }
     };
 }
