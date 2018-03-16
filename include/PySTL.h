@@ -6,7 +6,6 @@
 #define PYSTL_MAIN_H
 
 #include <tuple>
-#include <vector>
 
 namespace PySTL {
     template<class T>
@@ -21,23 +20,23 @@ namespace PySTL {
         const int Start;
 
         class EnumerateIterator {
-            int Idx, RealIdx;
-            T & Collection;
+            typename T::iterator CollectionIter;
+            int Idx;
         public:
-            EnumerateIterator(T & collection, const int idx, const int realIdx):
-                Collection(collection), Idx(idx), RealIdx(realIdx) {}
+            EnumerateIterator(const int idx, const typename T::iterator collectionIter):
+                Idx(idx), CollectionIter(collectionIter) {}
 
             iterator_value_type operator*() {
-                return iterator_value_type(Idx, Collection[RealIdx]);
+                return iterator_value_type(Idx, *CollectionIter);
             }
 
             void operator++() {
                 Idx++;
-                RealIdx++;
+                CollectionIter++;
             }
 
             bool operator==(const EnumerateIterator & it) const {
-                return &Collection == &(it.Collection) && RealIdx == it.RealIdx && Idx == it.Idx;
+                return CollectionIter == it.CollectionIter && Idx == it.Idx;
             }
 
             bool operator!=(const EnumerateIterator & it) const {
@@ -49,12 +48,11 @@ namespace PySTL {
         enumerate(T & collection, const int start=0) : Collection(collection), Start(start) {}
 
         EnumerateIterator begin() {
-            return EnumerateIterator(Collection, Start, 0);
+            return EnumerateIterator(Start, Collection.begin());
         }
 
         EnumerateIterator end() {
-            const int lenCollection = len(Collection);
-            return EnumerateIterator(Collection, Start + lenCollection, lenCollection);
+            return EnumerateIterator(Start + len(Collection), Collection.end());
         }
 
     };
