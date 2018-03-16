@@ -21,5 +21,5 @@ download_project(
 add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
 
 #set(test_SRCS ADD ALL TEST SOURCE FILES HERE)
-add_executable(runUnitTests gtest.cpp ${test_SRCS} test_enumerate.cpp test_len.cpp)
+add_executable(runUnitTests gtest.cpp ${test_SRCS} test_enumerate.cpp test_len.cpp test_range.cpp)
 target_link_libraries(runUnitTests gtest gmock)
