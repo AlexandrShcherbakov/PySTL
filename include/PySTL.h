@@ -15,20 +15,21 @@ namespace PySTL {
 
     template<class T>
     class enumerate {
-        using iterator_value_type = std::tuple<int, typename T::value_type&>;
         T & Collection;
         T FakeCollection;
         const int Start;
 
+        template<class IterType>
         class EnumerateIterator {
-            typename T::iterator CollectionIter;
+            IterType CollectionIter;
             int Idx;
+            using ValueType = std::tuple<int, decltype(*CollectionIter)&>;
         public:
-            EnumerateIterator(const int idx, const typename T::iterator collectionIter):
+            EnumerateIterator(const int idx, const IterType collectionIter):
                 Idx(idx), CollectionIter(collectionIter) {}
 
-            iterator_value_type operator*() {
-                return iterator_value_type(Idx, *CollectionIter);
+            ValueType operator*() {
+                return ValueType(Idx, *CollectionIter);
             }
 
             void operator++() {
@@ -50,14 +51,13 @@ namespace PySTL {
             FakeCollection(collection), Collection(FakeCollection), Start(start) {}
         enumerate(T & collection, const int start=0) : Collection(collection), Start(start) {}
 
-        EnumerateIterator begin() {
-            return EnumerateIterator(Start, Collection.begin());
+        EnumerateIterator<decltype(Collection.begin())> begin() {
+            return EnumerateIterator<decltype(Collection.begin())>(Start, Collection.begin());
         }
 
-        EnumerateIterator end() {
-            return EnumerateIterator(Start + len(Collection), Collection.end());
+        EnumerateIterator<decltype(Collection.begin())> end() {
+            return EnumerateIterator<decltype(Collection.begin())>(Start + len(Collection), Collection.end());
         }
-
     };
 
     class range {
@@ -71,6 +71,10 @@ namespace PySTL {
                 Idx(idx), Begin(begin), End(end), Step(step) {}
 
             int& operator*() {
+                return Idx;
+            }
+
+            const int& operator*() const {
                 return Idx;
             }
 
@@ -102,6 +106,7 @@ namespace PySTL {
     public:
         using value_type = int;
         using iterator = RangeIterator;
+        using const_iterator = RangeIterator;
         range(const int begin, const int end, const int step=1): Begin(begin), End(end), Step(step) {
             assert(Step);
         }

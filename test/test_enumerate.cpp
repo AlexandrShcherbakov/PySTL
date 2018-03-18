@@ -48,3 +48,17 @@ TEST(RvalueEnumerate__Test, EnumerateFunction) {
         ASSERT_EQ(std::get<0>(it), std::get<1>(it));
     }
 }
+
+TEST(ConstEnumerate__Test, EnumerateFunction) {
+    const std::string v = "Test string";
+    const auto e = enumerate(v);
+    for (auto it : enumerate(v)) {
+        ASSERT_EQ(std::get<1>(it), v[std::get<0>(it)]);
+        ASSERT_EQ(&std::get<1>(it), &v[std::get<0>(it)]);
+    }
+
+    for (const auto it : enumerate(v)) {
+        ASSERT_EQ(std::get<1>(it), v[std::get<0>(it)]);
+        ASSERT_EQ(&std::get<1>(it), &v[std::get<0>(it)]);
+    }
+}
