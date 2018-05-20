@@ -10,7 +10,11 @@ include(CTest)
 enable_testing()
 
 #set(gtest_disable_pthreads on) #needed in MinGW
-include(~/3rdPartyLibs/DownloadProject/DownloadProject.cmake)
+if (UNIX)
+    include(~/3rdPartyLibs/DownloadProject/DownloadProject.cmake)
+else(UNIX)
+    include(D:\\Projects\\DownloadProject\\DownloadProject.cmake)
+endif(UNIX)
 download_project(
         PROJ                googletest
         GIT_REPOSITORY      https://github.com/google/googletest.git
