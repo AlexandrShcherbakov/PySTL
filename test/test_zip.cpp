@@ -4,7 +4,7 @@
 
 #include "gtest/gtest.h"
 
-#include "../include/PySTL.h"
+#include "../include/PySTL_functions/zip.h"
 
 using namespace PySTL;
 
