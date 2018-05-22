@@ -6,15 +6,25 @@
 #define PYSTL_ENUMERATE_H
 
 #include <tuple>
+#include <type_traits>
+#include <memory>
 
 #include <len.h>
 
 namespace PySTL {
 
+    namespace {
+        template<typename T>
+        std::unique_ptr<typename std::remove_reference<T>::type > rvalueToPtr(T && collection) {
+            using CollectionType = typename std::remove_reference<T>::type;
+            return std::unique_ptr<CollectionType>(new CollectionType(collection));
+        }
+    }
+
     template<class T>
     class enumerate {
+        std::unique_ptr<typename std::remove_reference<T>::type > FakeCollection;
         T & Collection;
-        T FakeCollection;
         const int Start;
 
         template<class IterType>
@@ -30,9 +40,10 @@ namespace PySTL {
                 return ValueType(Idx, *CollectionIter);
             }
 
-            void operator++() {
-                Idx++;
-                CollectionIter++;
+            EnumerateIterator& operator++() {
+                ++Idx;
+                ++CollectionIter;
+                return *this;
             }
 
             bool operator==(const EnumerateIterator & it) const {
@@ -45,9 +56,9 @@ namespace PySTL {
         };
 
     public:
-        enumerate(T && collection, const int start=0) :
-            FakeCollection(collection), Collection(FakeCollection), Start(start) {}
-        enumerate(T & collection, const int start=0) : Collection(collection), Start(start) {}
+        explicit enumerate(T && collection, const int start=0) :
+            FakeCollection(rvalueToPtr(collection)), Collection(*FakeCollection), Start(start) {}
+        explicit enumerate(T & collection, const int start=0) : Collection(collection), Start(start) {}
 
         EnumerateIterator<decltype(Collection.begin())> begin() {
             return EnumerateIterator<decltype(Collection.begin())>(Start, Collection.begin());

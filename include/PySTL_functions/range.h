@@ -7,7 +7,7 @@
 
 namespace PySTL {
     class range {
-        const int Begin, End, Step;
+        int Begin, End, Step;
 
         class RangeIterator {
             int Idx;
