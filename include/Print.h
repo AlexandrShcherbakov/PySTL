@@ -93,7 +93,7 @@ private:
     std::ostream* m_out = &std::cout; // Cannot use refernce
                                      // becouse it may be replaced
     std::string_view m_sep = " ";
-    std::string_view m_end = " ";
+    std::string_view m_end = "\n";
     bool need_flush = false;
     __print_impl<Args...> m_data;
 };
