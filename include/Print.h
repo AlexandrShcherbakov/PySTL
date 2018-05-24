@@ -67,6 +67,11 @@ public:
         return *this;
     }
 
+    __print_holder& flush(bool value)
+    {
+        need_flush = value;
+    }
+
     __print_holder(const Args&... args)
         : m_data(args...)
     { }
@@ -75,6 +80,9 @@ public:
     {
         m_data.flush(*m_out, m_sep);
         *m_out << m_end;
+        if (need_flush) {
+            m_out->flush();
+        }
     }
 
     // Cannot be copied or moved
@@ -86,6 +94,7 @@ private:
                                      // becouse it may be replaced
     std::string_view m_sep = " ";
     std::string_view m_end = " ";
+    bool need_flush = false;
     __print_impl<Args...> m_data;
 };
 
