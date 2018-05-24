@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string_view>
 
 namespace PySTL
 {
@@ -18,7 +19,7 @@ public:
         : m_head(head), m_tail(tail...)
     { }
 
-    void flush(std::ostream& out, const std::string& sep)
+    void flush(std::ostream& out, const std::string_view& sep)
     {
         out << m_head << sep;
         m_tail.flush(out, sep);
@@ -37,7 +38,7 @@ public:
         : m_head(head)
     { }
 
-    void flush(std::ostream& out, const std::string&) {
+    void flush(std::ostream& out, const std::string_view&) {
         out << m_head;
     }
 private:
@@ -48,13 +49,13 @@ template <typename... Args>
 class __print_holder {
 public:
 
-    __print_holder& end(std::string e)
+    __print_holder& end(std::string_view e)
     {
-        m_end = std::move(e);
+        m_end = e;
         return *this;
     }
 
-    __print_holder& sep(std::string s)
+    __print_holder& sep(std::string_view s)
     {
         m_sep = s;
         return *this;
@@ -83,8 +84,8 @@ public:
 private:
     std::ostream* m_out = &std::cout; // Cannot use refernce
                                      // becouse it may be replaced
-    std::string m_sep = " ";
-    std::string m_end = " ";
+    std::string_view m_sep = " ";
+    std::string_view m_end = " ";
     __print_impl<Args...> m_data;
 };
 
