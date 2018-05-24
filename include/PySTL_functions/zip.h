@@ -69,26 +69,16 @@ namespace PySTL {
         }
     };
 
-    template <class HeadType>
-    class _zip_impl<HeadType> {
-        using HeadValueType = std::tuple<typename HeadType::value_type&>;
-        HeadType Head;
-
+    template <>
+    class _zip_impl<> {
     public:
         class ZipIterator {
-            using HeadIterType = typename HeadType::iterator;
-            HeadIterType Head;
         public:
-            ZipIterator(const HeadIterType& head) :
-                Head(head) {
-            }
-
-            HeadValueType operator*() {
-                return HeadValueType(*Head);
+            std::tuple<> operator*() {
+                return std::tuple<>();
             }
 
             ZipIterator& operator++() {
-                ++Head;
                 return (*this);
             }
 
@@ -99,7 +89,7 @@ namespace PySTL {
             }
 
             bool operator==(const ZipIterator& it) const {
-                return Head == it.Head;
+                return true;
             }
 
             bool operator!=(const ZipIterator& it) const {
@@ -107,17 +97,14 @@ namespace PySTL {
             }
         };
 
-        using value_type = HeadValueType;
-
-        _zip_impl(const HeadType& head) :
-            Head(head) {}
+        using value_type = std::tuple<>;
 
         auto begin() {
-            return ZipIterator(Head.begin());
+            return ZipIterator();
         }
 
         auto end() {
-            return ZipIterator(Head.end());
+            return ZipIterator();
         }
     };
 
