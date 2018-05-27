@@ -15,7 +15,7 @@ namespace PySTL {
     class _zip_impl<HeadType, Args...> {
         using HeadValueType = std::tuple<typename HeadType::value_type&>;
         using TailValueType = typename _zip_impl<Args...>::value_type;
-        HeadType Head;
+        HeadType& Head;
         _zip_impl<Args...> Tail;
 
     public:
@@ -57,7 +57,7 @@ namespace PySTL {
             }
         };
 
-        _zip_impl(const HeadType& head, const Args& ... args) :
+        _zip_impl(HeadType& head, Args& ... args) :
             Head(head), Tail(args...) {}
 
         auto begin() {
@@ -109,7 +109,7 @@ namespace PySTL {
     };
 
     template<class ... Args>
-    _zip_impl<Args...> zip(Args ... args) {
+    _zip_impl<Args...> zip(Args& ... args) {
         return _zip_impl<Args...>(args...);
     }
 };
