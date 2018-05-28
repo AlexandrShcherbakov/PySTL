@@ -12,18 +12,10 @@
 #include <len.h>
 
 namespace PySTL {
-
-    namespace {
-        template<typename T>
-        std::unique_ptr<typename std::remove_reference<T>::type > rvalueToPtr(T && collection) {
-            using CollectionType = typename std::remove_reference<T>::type;
-            return std::unique_ptr<CollectionType>(new CollectionType(collection));
-        }
-    }
-
     template<class T>
     class enumerate {
-        std::unique_ptr<typename std::remove_reference<T>::type > FakeCollection;
+        using FakeCollectionType = typename std::remove_reference<T>::type;
+        std::unique_ptr<FakeCollectionType> FakeCollection;
         T & Collection;
         const int Start;
 
@@ -57,7 +49,8 @@ namespace PySTL {
 
     public:
         explicit enumerate(T && collection, const int start=0) :
-            FakeCollection(rvalueToPtr(collection)), Collection(*FakeCollection), Start(start) {}
+            FakeCollection(std::make_unique<FakeCollectionType>(collection)),
+            Collection(*FakeCollection), Start(start) {}
         explicit enumerate(T & collection, const int start=0) : Collection(collection), Start(start) {}
 
         EnumerateIterator<decltype(Collection.begin())> begin() {
