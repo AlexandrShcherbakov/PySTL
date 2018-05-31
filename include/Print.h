@@ -6,12 +6,14 @@ namespace PySTL
 
 namespace detail {
 
+struct Unit; // empty class. Finish arg list of print
+
 template <typename Head, typename... Args>
 class print_impl
 {
 public:
-    template <typename... CArgs>
-    print_impl(const Head& head, const CArgs&... tail)
+    template <typename... T>
+    print_impl(const Head& head, const T&... tail)
         : m_head(head), m_tail(tail...)
     { }
 
@@ -26,8 +28,7 @@ private:
     print_impl<Args...> m_tail;
 };
 
-struct Unit; // empty class
-
+// Must not write separator after last argument
 template <typename Head>
 class print_impl<Head, Unit>
 {
@@ -43,7 +44,7 @@ private:
     const Head& m_head;
 };
 
-
+// Implementation of print without arguments
 template<>
 class print_impl<Unit>
 {
@@ -97,6 +98,7 @@ public:
         : m_data(args...)
     { }
 
+    // Must print all arguments
     ~print_holder() noexcept
     {
         m_data.flush(*m_out, m_sep);
