@@ -31,8 +31,10 @@ private:
     print_impl<Args...> m_tail;
 };
 
+struct Unit; // empty class
+
 template <typename Head>
-class print_impl<Head>
+class print_impl<Head, Unit>
 {
 public:
     print_impl(const Head& head)
@@ -46,7 +48,6 @@ private:
     const Head& m_head;
 };
 
-struct Unit; // empty class
 
 template<>
 class print_impl<Unit>
