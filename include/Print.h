@@ -19,6 +19,10 @@ public:
         : m_head(head), m_tail(tail...)
     { }
 
+    print_impl(const Head& head)
+        : m_head(head), m_tail()
+    { }
+
     void flush(std::ostream& out, const std::string_view& sep)
     {
         out << m_head << sep;
@@ -43,6 +47,20 @@ public:
     }
 private:
     const Head& m_head;
+};
+
+struct Unit; // empty class
+
+template<>
+class print_impl<Unit>
+{
+public:
+    print_impl()
+    { }
+
+    void flush(std::ostream& out, const std::string_view&) {
+        // do nothing
+    }
 };
 
 template <typename... Args>
@@ -95,7 +113,7 @@ private:
     std::string_view m_sep = " ";
     std::string_view m_end = "\n";
     bool need_flush = false;
-    print_impl<Args...> m_data;
+    print_impl<Args..., Unit> m_data;
 };
 
 
