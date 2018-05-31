@@ -85,10 +85,19 @@ public:
         return *this;
     }
 
-    print_holder& flush(bool value)
+    print_holder& flush(bool need_flush)
     {
-        need_flush = value;
+        m_need_flush = need_flush;
         return *this;
+    }
+
+    print_holder& operator()(
+            std::string_view _sep=" ",
+            std::string_view _end="\n",
+            std::ostream& _file=std::cout,
+            bool _flush=false
+        ) {
+        return this->sep(_sep).end(_end).file(_file).flush(_flush);
     }
 
     print_holder(const Args&... args)
@@ -99,7 +108,7 @@ public:
     {
         m_data.flush(*m_out, m_sep);
         *m_out << m_end;
-        if (need_flush) {
+        if (m_need_flush) {
             m_out->flush();
         }
     }
@@ -113,7 +122,7 @@ private:
                                      // becouse it may be replaced
     std::string_view m_sep = " ";
     std::string_view m_end = "\n";
-    bool need_flush = false;
+    bool m_need_flush = false;
     print_impl<Args..., Unit> m_data;
 };
 
