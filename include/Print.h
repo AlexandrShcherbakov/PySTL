@@ -15,12 +15,9 @@ template <typename Head, typename... Args>
 class print_impl
 {
 public:
-    print_impl(const Head& head, const Args&... tail)
+    template <typename... CArgs>
+    print_impl(const Head& head, const CArgs&... tail)
         : m_head(head), m_tail(tail...)
-    { }
-
-    print_impl(const Head& head)
-        : m_head(head), m_tail()
     { }
 
     void flush(std::ostream& out, const std::string_view& sep)
