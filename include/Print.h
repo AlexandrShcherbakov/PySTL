@@ -88,6 +88,7 @@ public:
     print_holder& flush(bool value)
     {
         need_flush = value;
+        return *this;
     }
 
     print_holder(const Args&... args)
