@@ -15,9 +15,22 @@ TEST(ZipFunction, OneArgZip) {
     }
 }
 
+TEST(ZipFunction, OneRvalueArgZip) {
+    for (const auto [i] : zip(std::vector<int>(10, 5))) {
+        ASSERT_EQ(i, 5);
+    }
+}
+
 TEST(ZipFunction, TwoArgZip) {
     std::vector<int> a = {1, 2, 3, 4, 5, 6, 7};
     for (const auto [i, j] : zip(a, a)) {
+        ASSERT_EQ(i, j);
+    }
+}
+
+TEST(ZipFunction, MixLvalueRvalueArgsZip) {
+    std::vector<int> a(10, 5);
+    for (const auto [i, j] : zip(a, std::vector<int>(10, 5))) {
         ASSERT_EQ(i, j);
     }
 }

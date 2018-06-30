@@ -13,7 +13,7 @@ namespace PySTL {
 
     template <class HeadType, class ... Args>
     class zip_impl<HeadType, Args...> {
-        using HeadValueType = std::tuple<typename HeadType::value_type&>;
+        using HeadValueType = std::tuple<typename std::remove_reference<HeadType>::type::value_type&>;
         using TailValueType = typename zip_impl<Args...>::value_type;
         HeadType& Head;
         zip_impl<Args...> Tail;
@@ -22,7 +22,7 @@ namespace PySTL {
         using value_type = decltype(std::tuple_cat(std::declval<HeadValueType>(), std::declval<TailValueType>()));
 
         class ZipIterator {
-            using HeadIterType = typename HeadType::iterator;
+            using HeadIterType = typename std::remove_reference<HeadType>::type::iterator;
             using TailIterType = typename zip_impl<Args...>::ZipIterator;
             HeadIterType Head;
             TailIterType Tail;
@@ -109,7 +109,7 @@ namespace PySTL {
     };
 
     template<class ... Args>
-    zip_impl<Args...> zip(Args& ... args) {
+    zip_impl<Args...> zip(Args&& ... args) {
         return zip_impl<Args...>(args...);
     }
 };
