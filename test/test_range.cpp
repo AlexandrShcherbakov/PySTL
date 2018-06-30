@@ -4,25 +4,25 @@
 
 #include "gtest/gtest.h"
 
-#include "../include/PySTL_functions/range.h"
+#include "range.h"
 
 using namespace PySTL;
 
-TEST(RangeToEnd__Test, RangeFunction) {
+TEST(RangeFunction, RangeToEnd) {
     for (auto x: range(10)) {
         ASSERT_LT(x, 10);
         ASSERT_GE(x, 0);
     }
 }
 
-TEST(RangeBeginToEnd__Test, RangeFunction) {
+TEST(RangeFunction, RangeBeginToEnd) {
     for (auto x: range(10, 20)) {
         ASSERT_LT(x, 20);
         ASSERT_GE(x, 10);
     }
 }
 
-TEST(RangeBeginToEndWithStep__Test, RangeFunction) {
+TEST(RangeFunction, RangeBeginToEndWithStep) {
     int count = 0;
     for (auto x: range(10, 20, 2)) {
         ASSERT_LT(x, 20);

@@ -4,12 +4,12 @@
 
 #include "gtest/gtest.h"
 
-#include "../include/PySTL_functions/enumerate.h"
-#include "../include/PySTL_functions/range.h"
+#include "enumerate.h"
+#include "range.h"
 
 using namespace PySTL;
 
-TEST(VectorEnumerate__Test, EnumerateFunction) {
+TEST(EnumerateFunction, VectorEnumerate) {
     std::vector<float> v(10, 1e-4f);
     for (auto it : enumerate(v)) {
         ASSERT_EQ(std::get<1>(it), v[std::get<0>(it)]);
@@ -20,7 +20,7 @@ TEST(VectorEnumerate__Test, EnumerateFunction) {
 }
 
 
-TEST(ArrayEnumerate__Test, EnumerateFunction) {
+TEST(EnumerateFunction, ArrayEnumerate) {
     std::array<float, 3> v = {1, 2, 3};
     for (auto it : enumerate(v)) {
         ASSERT_EQ(std::get<1>(it), v[std::get<0>(it)]);
@@ -30,7 +30,7 @@ TEST(ArrayEnumerate__Test, EnumerateFunction) {
     ASSERT_EQ(v[0], std::get<1>(*enumerate(v).begin()));
 }
 
-TEST(StringEnumerate__Test, EnumerateFunction) {
+TEST(EnumerateFunction, StringEnumerate) {
     std::string v = "Test string";
     for (auto it : enumerate(v)) {
         ASSERT_EQ(std::get<1>(it), v[std::get<0>(it)]);
@@ -40,7 +40,7 @@ TEST(StringEnumerate__Test, EnumerateFunction) {
     ASSERT_EQ(v[0], std::get<1>(*enumerate(v).begin()));
 }
 
-TEST(RvalueEnumerate__Test, EnumerateFunction) {
+TEST(EnumerateFunction, RvalueEnumerate) {
     for (auto it: enumerate(std::vector<int>(4, 10))) {
         ASSERT_EQ(std::get<1>(it), 10);
     }
@@ -50,7 +50,7 @@ TEST(RvalueEnumerate__Test, EnumerateFunction) {
     }
 }
 
-TEST(ConstEnumerate__Test, EnumerateFunction) {
+TEST(EnumerateFunction, ConstEnumerate) {
     const std::string v = "Test string";
     const auto e = enumerate(v);
     for (auto it : enumerate(v)) {

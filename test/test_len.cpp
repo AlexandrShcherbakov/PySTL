@@ -4,12 +4,12 @@
 
 #include "gtest/gtest.h"
 
-#include "../include/PySTL_functions/len.h"
+#include "len.h"
 
 
 using namespace PySTL;
 
-TEST(VectorLen__Test, LenFunction) {
+TEST(LenFunction, VectorLen) {
     std::vector<int> v(10, 10);
     ASSERT_EQ(v.size(), len(v));
     v.clear();
@@ -18,13 +18,13 @@ TEST(VectorLen__Test, LenFunction) {
     ASSERT_EQ(z.size(), len(z));
 }
 
-TEST(ArrayLen__Test, LenFunction) {
+TEST(LenFunction, ArrayLen) {
     std::array<int, 100> v = {0};
     ASSERT_EQ(v.size(), len(v));
 }
 
 
-TEST(MapLen__Test, LenFunction) {
+TEST(LenFunction, MapLen) {
     std::map<int, float> v;
     v[0] = 1e-5f;
     v[-1000] = 200;
@@ -32,7 +32,7 @@ TEST(MapLen__Test, LenFunction) {
 }
 
 
-TEST(StringLen__Test, LenFunction) {
+TEST(LenFunction, StringLen) {
     std::string v = "asdasdad";
     ASSERT_EQ(v.size(), len(v));
 }
