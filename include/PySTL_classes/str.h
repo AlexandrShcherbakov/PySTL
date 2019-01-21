@@ -42,14 +42,28 @@ namespace PySTL {
 //    __new__: <built-in method __new__ of type object at 0x7fa7e5c71540>
 //    encode: <method 'encode' of 'str' objects>
 //    replace: <method 'replace' of 'str' objects>
-        std::vector<str> split() const {
-            const std::string& sep = " ";
+        std::vector<str> split(const int maxsplit = -1) const {
+            const str sep = " ";
             std::vector<str> result;
             size_t begin, end;
-            for (begin = 0, end = container.find(sep); end != std::string::npos; begin = end + 1, end = container.find(sep, begin)) {
+            for (begin = 0, end = container.find(sep.container);
+                    end != std::string::npos && result.size() != maxsplit;
+                    begin = end + 1, end = container.find(sep.container, begin)) {
                 if (begin == end) {
                     continue;
                 }
+                result.emplace_back(container.substr(begin, end - begin));
+            }
+            result.emplace_back(container.substr(begin));
+            return result;
+        }
+
+        std::vector<str> split(const str& sep, const int maxsplit = -1) const {
+            std::vector<str> result;
+            size_t begin, end;
+            for (begin = 0, end = container.find(sep.container);
+                    end != std::string::npos && result.size() != maxsplit;
+                    begin = end + 1, end = container.find(sep.container, begin)) {
                 result.emplace_back(container.substr(begin, end - begin));
             }
             result.emplace_back(container.substr(begin));
