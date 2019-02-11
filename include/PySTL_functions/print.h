@@ -113,8 +113,8 @@ public:
     print_holder(print_holder&&) = delete;
 
 private:
-    std::ostream* m_out = &std::cout; // Cannot use refernce
-                                     // becouse it may be replaced
+    std::ostream* m_out = &std::cout; // Cannot use reference
+                                     // because it may be replaced
     std::string_view m_sep = " ";
     std::string_view m_end = "\n";
     bool m_need_flush = false;
@@ -122,7 +122,7 @@ private:
 };
 
 
-} // namespace deatail
+} // namespace detail
 
 template <typename... Args>
 detail::print_holder<Args...> print(const Args&... args)
