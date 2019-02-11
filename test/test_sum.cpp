@@ -13,8 +13,8 @@ TEST(SumFunction, VectorSum) {
     std::vector<int> v(10, 10);
     ASSERT_EQ(sum(v), 100);
     std::vector<float> x(3, 5);
-    ASSERT_EQ(sum(x), 15);
-    ASSERT_EQ(sum(x, 5.f), 20.f);
+    ASSERT_FLOAT_EQ(sum(x), 15);
+    ASSERT_FLOAT_EQ(sum(x, 5.f), 20.f);
 }
 
 TEST(SumFunction, StaticArraySum) {
