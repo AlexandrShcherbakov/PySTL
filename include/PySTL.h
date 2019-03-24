@@ -8,6 +8,7 @@
 #include <enumerate.h>
 #include <print.h>
 #include <range.h>
+#include <sum.h>
 #include <zip.h>
 
 #endif //PYSTL_MAIN_H

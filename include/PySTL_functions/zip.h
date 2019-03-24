@@ -42,7 +42,7 @@ namespace PySTL {
                 return (*this);
             }
 
-            ZipIterator operator++(int) {
+            const ZipIterator operator++(int) {
                 auto copy = (*this);
                 ++(*this);
                 return copy;
@@ -82,7 +82,7 @@ namespace PySTL {
                 return (*this);
             }
 
-            ZipIterator operator++(int) {
+            const ZipIterator operator++(int) {
                 auto copy = (*this);
                 ++(*this);
                 return copy;
