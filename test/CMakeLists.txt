@@ -24,5 +24,6 @@ add_executable(runUnitTests gtest.cpp ${test_SRCS}
         test_range.cpp
         test_zip.cpp
         test_sum.cpp
-        test_all.cpp)
+        test_all.cpp
+        test_any.cpp)
 target_link_libraries(runUnitTests gtest gmock)
