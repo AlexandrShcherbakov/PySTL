@@ -37,8 +37,8 @@ namespace PySTL {
 
             bool operator==(const RangeIterator & it) const {
                 /// All iterators out of range are equal
-                const bool firstOutOfRange = Step * (End - Idx) <= 0;
-                const bool secondOutOfRange = it.Step * (it.End - it.Idx) <= 0;
+                const bool firstOutOfRange = End == Idx || ((End < Idx) == (Step > 0));
+                const bool secondOutOfRange = it.End == it.Idx || ((it.End < it.Idx) == (it.Step > 0));
                 return (Idx == it.Idx || firstOutOfRange && secondOutOfRange)
                        && Step == it.Step
                        && Begin == it.Begin

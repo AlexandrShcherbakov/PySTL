@@ -22,6 +22,17 @@ TEST(RangeFunction, RangeBeginToEnd) {
     }
 }
 
+TEST(RangeFunction, BigNumbers) {
+    int testValue = 0;
+    const int INCREMENT = 100000;
+    const int FINAL_VALUE = 1000000;
+    for (auto x: range(0, FINAL_VALUE, INCREMENT)) {
+        ASSERT_EQ(x, testValue);
+        testValue += INCREMENT;
+    }
+    ASSERT_EQ(testValue, FINAL_VALUE);
+}
+
 TEST(RangeFunction, RangeBeginToEndWithStep) {
     int count = 0;
     for (auto x: range(10, 20, 2)) {
